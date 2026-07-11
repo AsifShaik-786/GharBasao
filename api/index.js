@@ -38,18 +38,15 @@ app.use(
 
 app.use(cookieParser());
 
-const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}!`);
-});
-
+// API Routes
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/listing', listingRouter);
 app.use('/api/visit', visitRouter);
 
 
+// Serve frontend
 app.use(express.static(path.join(__dirname, '/client/dist')));
 
 app.get('*', (req, res) => {
@@ -57,6 +54,7 @@ app.get('*', (req, res) => {
 });
 
 
+// Error Handler
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || 'Internal Server Error';
@@ -66,4 +64,12 @@ app.use((err, req, res, next) => {
     statusCode,
     message,
   });
+});
+
+
+// Start Server (Render)
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on port ${PORT}!`);
 });
