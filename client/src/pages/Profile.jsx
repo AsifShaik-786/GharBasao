@@ -37,10 +37,14 @@ export default function Profile() {
   // request.resource.contentType.matches('image/.*')
 
   useEffect(() => {
-    if (file) {
-      handleFileUpload(file);
-    }
-  }, [file]);
+  if (file) {
+    handleFileUpload(file);
+  }
+}, [file]);
+
+useEffect(() => {
+  handleShowListings();
+}, []);
 
   const handleFileUpload = (file) => {
     const storage = getStorage(app);
@@ -161,9 +165,13 @@ export default function Profile() {
     }
   };
   return (
-    <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-3xl font-semibold text-center my-7'>Profile</h1>
-      <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<h1 className="text-4xl font-bold text-center text-slate-800 mb-8">
+  My Profile
+</h1>
+      <form
+  onSubmit={handleSubmit}
+  className="bg-white rounded-3xl shadow-xl border border-gray-200 p-6 sm:p-8 flex flex-col gap-5">
         <input
           onChange={(e) => setFile(e.target.files[0])}
           type='file'
@@ -171,13 +179,19 @@ export default function Profile() {
           hidden
           accept='image/*'
         />
-        <img
-          onClick={() => fileRef.current.click()}
-          src={formData.avatar || currentUser.avatar}
-          alt='profile'
-          className='rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2'
-        />
-        <p className='text-sm self-center'>
+        <div className="flex flex-col items-center">
+  <img
+    onClick={() => fileRef.current.click()}
+    src={formData.avatar || currentUser.avatar}
+    alt="profile"
+    className="w-36 h-36 rounded-full object-cover border-4 border-blue-500 shadow-lg cursor-pointer hover:scale-105 hover:border-blue-600 transition duration-300"
+  />
+
+  {/* <p className="mt-3 text-sm text-gray-500">
+    Click the photo to change your profile picture
+  </p> */}
+</div>
+        <p className="text-sm text-center font-medium">
           {fileUploadError ? (
             <span className='text-red-700'>
               Error Image upload (image must be less than 2 mb)
@@ -195,7 +209,7 @@ export default function Profile() {
           placeholder='username'
           defaultValue={currentUser.username}
           id='username'
-          className='border p-3 rounded-lg'
+          className="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
           onChange={handleChange}
         />
         <input
@@ -203,7 +217,7 @@ export default function Profile() {
           placeholder='email'
           id='email'
           defaultValue={currentUser.email}
-          className='border p-3 rounded-lg'
+          className="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
           onChange={handleChange}
         />
         <input
@@ -211,81 +225,161 @@ export default function Profile() {
           placeholder='password'
           onChange={handleChange}
           id='password'
-          className='border p-3 rounded-lg'
-        />
+className="w-full border border-gray-300 rounded-xl px-4 py-3 text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"        />
         <button
           disabled={loading}
-          className='bg-slate-700 text-white rounded-lg p-3 uppercase hover:opacity-95 disabled:opacity-80'
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-xl font-semibold transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-70"
         >
           {loading ? 'Loading...' : 'Update'}
         </button>
         <Link
-          className='bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95'
+          className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl text-center font-semibold transition-all duration-300 shadow-md hover:shadow-lg"
           to={'/create-listing'}
         >
           Create Listing
         </Link>
+        <Link
+className="w-full bg-pink-500 hover:bg-pink-600 text-white py-3 rounded-xl text-center font-semibold transition-all duration-300 shadow-md hover:shadow-lg"  to='/wishlist'
+>
+  ❤️ My Wishlist
+</Link>
+
+<Link
+className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-xl text-center font-semibold transition-all duration-300 shadow-md hover:shadow-lg"  to='/visit-requests'
+>
+  📅 Visit Requests
+</Link>
       </form>
-      <div className='flex justify-between mt-5'>
-        <span
-          onClick={handleDeleteUser}
-          className='text-red-700 cursor-pointer'
-        >
-          Delete account
-        </span>
-        <span onClick={handleSignOut} className='text-red-700 cursor-pointer'>
-          Sign out
-        </span>
-      </div>
+     <div className="flex flex-col sm:flex-row gap-4 mt-6">
+  <button
+    type="button"
+    onClick={handleDeleteUser}
+    className="flex-1 border-2 border-red-500 text-red-600 py-3 rounded-xl font-semibold hover:bg-red-500 hover:text-white transition-all duration-300"
+  >
+    🗑 Delete Account
+  </button>
+
+  <button
+    type="button"
+    onClick={handleSignOut}
+    className="flex-1 border-2 border-slate-700 text-slate-700 py-3 rounded-xl font-semibold hover:bg-slate-700 hover:text-white transition-all duration-300"
+  >
+    🚪 Sign Out
+  </button>
+</div>
 
       <p className='text-red-700 mt-5'>{error ? error : ''}</p>
       <p className='text-green-700 mt-5'>
         {updateSuccess ? 'User is updated successfully!' : ''}
       </p>
-      <button onClick={handleShowListings} className='text-green-700 w-full'>
+      {/* <button onClick={handleShowListings} className='text-green-700 w-full'>
         Show Listings
-      </button>
+      </button> */}
       <p className='text-red-700 mt-5'>
         {showListingsError ? 'Error showing listings' : ''}
       </p>
 
       {userListings && userListings.length > 0 && (
-        <div className='flex flex-col gap-4'>
-          <h1 className='text-center mt-7 text-2xl font-semibold'>
-            Your Listings
-          </h1>
-          {userListings.map((listing) => (
-            <div
-              key={listing._id}
-              className='border rounded-lg p-3 flex justify-between items-center gap-4'
-            >
-              <Link to={`/listing/${listing._id}`}>
-                <img
-                  src={listing.imageUrls[0]}
-                  alt='listing cover'
-                  className='h-16 w-16 object-contain'
-                />
-              </Link>
-              <Link
-                className='text-slate-700 font-semibold  hover:underline truncate flex-1'
-                to={`/listing/${listing._id}`}
-              >
-                <p>{listing.name}</p>
-              </Link>
+<div className="flex flex-col gap-6 mt-10">
+            <div className="text-center mb-8">
+  <h2 className="text-3xl sm:text-4xl font-bold text-slate-800">
+    My Properties
+  </h2>
 
-              <div className='flex flex-col item-center'>
-                <button
-                  onClick={() => handleListingDelete(listing._id)}
-                  className='text-red-700 uppercase'
-                >
-                  Delete
-                </button>
-                <Link to={`/update-listing/${listing._id}`}>
-                  <button className='text-green-700 uppercase'>Edit</button>
-                </Link>
-              </div>
-            </div>
-          ))}
+  <p className="text-gray-500 mt-2">
+    Manage, edit, and monitor all your property listings.
+  </p>
+</div>
+       {userListings.map((listing) => (
+  <div
+  key={listing._id}
+  className="bg-white rounded-3xl border border-gray-200 overflow-hidden shadow-md hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
+>
+    <div className="flex flex-col md:flex-row">
+
+      <Link to={`/listing/${listing._id}`}>
+        <img
+          src={listing.imageUrls[0]}
+          alt={listing.name}
+          className="w-full md:w-72 h-56 object-cover hover:scale-105 transition duration-500"
+        />
+      </Link>
+
+      <div className="flex-1 p-6 flex flex-col justify-between">
+
+        <div>
+
+          <Link
+            to={`/listing/${listing._id}`}
+            className="text-2xl font-bold text-slate-800 hover:text-blue-600 transition"
+          >
+            {listing.name}
+          </Link>
+
+          <p className="text-gray-500 mt-2">
+            📍 {listing.address}
+          </p>
+
+          <div className="flex gap-3 mt-4 flex-wrap">
+
+            <span className="px-3 py-1 bg-blue-100 rounded-full text-sm">
+              🛏 {listing.bedrooms} Beds
+            </span>
+
+            <span className="px-3 py-1 bg-green-100 rounded-full text-sm">
+              🛁 {listing.bathrooms} Baths
+            </span>
+
+            <span className="px-3 py-1 bg-yellow-100 rounded-full text-sm">
+              {listing.type === "rent" ? "🏠 Rent" : "🏡 Sale"}
+            </span>
+
+          </div>
+
+        </div>
+
+        <div className="flex justify-between items-center mt-6">
+
+          <div>
+
+            <div className="inline-flex items-center bg-green-100 text-green-700 px-4 py-2 rounded-xl">
+  <span className="text-2xl font-bold">
+    ₹ {listing.offer ? listing.discountPrice : listing.regularPrice}
+  </span>
+</div>
+
+            {listing.type === "rent" && (
+             <span className="ml-2 text-gray-500 font-medium">
+  / month
+</span>
+            )}
+
+          </div>
+
+          <div className="flex gap-3">
+
+            <Link to={`/update-listing/${listing._id}`}>
+              <button className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700">
+                Edit
+              </button>
+            </Link>
+
+            <button
+              onClick={() => handleListingDelete(listing._id)}
+              className="bg-red-600 text-white px-5 py-2 rounded-lg hover:bg-red-700"
+            >
+              Delete
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+))}
         </div>
       )}
     </div>

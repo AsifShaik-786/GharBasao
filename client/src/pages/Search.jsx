@@ -10,6 +10,7 @@ export default function Search() {
     parking: false,
     furnished: false,
     offer: false,
+    status: 'available',
     sort: 'created_at',
     order: 'desc',
   });
@@ -25,6 +26,7 @@ export default function Search() {
     const parkingFromUrl = urlParams.get('parking');
     const furnishedFromUrl = urlParams.get('furnished');
     const offerFromUrl = urlParams.get('offer');
+    const statusFromUrl = urlParams.get('status');
     const sortFromUrl = urlParams.get('sort');
     const orderFromUrl = urlParams.get('order');
 
@@ -43,7 +45,8 @@ export default function Search() {
         parking: parkingFromUrl === 'true' ? true : false,
         furnished: furnishedFromUrl === 'true' ? true : false,
         offer: offerFromUrl === 'true' ? true : false,
-        sort: sortFromUrl || 'created_at',
+status: statusFromUrl || 'available',
+sort: sortFromUrl || 'created_at',
         order: orderFromUrl || 'desc',
       });
     }
@@ -90,7 +93,12 @@ export default function Search() {
           e.target.checked || e.target.checked === 'true' ? true : false,
       });
     }
-
+     if (e.target.id === 'status') {
+  setSidebardata({
+    ...sidebardata,
+    status: e.target.value,
+  });
+}
     if (e.target.id === 'sort_order') {
       const sort = e.target.value.split('_')[0] || 'created_at';
 
@@ -103,6 +111,7 @@ export default function Search() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const urlParams = new URLSearchParams();
+    urlParams.set('status', sidebardata.status);
     urlParams.set('searchTerm', sidebardata.searchTerm);
     urlParams.set('type', sidebardata.type);
     urlParams.set('parking', sidebardata.parking);
@@ -210,6 +219,24 @@ export default function Search() {
               <span>Furnished</span>
             </div>
           </div>
+          <div className="flex items-center gap-2">
+  <label className="font-semibold">Availability:</label>
+
+  <select
+    id="status"
+    value={sidebardata.status}
+    onChange={(e) =>
+      setSidebardata({
+        ...sidebardata,
+        status: e.target.value,
+      })
+    }
+    className="border rounded-lg p-3"
+  >
+    <option value="available">Available Only</option>
+    <option value="all">All Properties</option>
+  </select>
+</div>
           <div className='flex items-center gap-2'>
             <label className='font-semibold'>Sort:</label>
             <select

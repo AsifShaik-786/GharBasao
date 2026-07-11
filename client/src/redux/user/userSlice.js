@@ -30,6 +30,11 @@ const userSlice = createSlice({
       state.loading = false;
       state.error = null;
     },
+    updateWishlistSuccess: (state, action) => {
+  if (state.currentUser) {
+    state.currentUser.wishlist = action.payload;
+  }
+},
     updateUserFailure: (state, action) => {
       state.error = action.payload;
       state.loading = false;
@@ -68,6 +73,7 @@ export const {
   updateUserFailure,
   updateUserSuccess,
   updateUserStart,
+  updateWishlistSuccess,
   deleteUserFailure,
   deleteUserSuccess,
   deleteUserStart,

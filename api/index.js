@@ -6,7 +6,11 @@ import authRouter from './routes/auth.route.js';
 import listingRouter from './routes/listing.route.js';
 import cookieParser from 'cookie-parser';
 import path from 'path';
+import visitRouter from './routes/visit.route.js';
+
 dotenv.config();
+console.log("EMAIL_USER:", process.env.EMAIL_USER);
+console.log("EMAIL_PASS exists:", !!process.env.EMAIL_PASS);
 
 mongoose
   .connect(process.env.MONGO)
@@ -22,9 +26,7 @@ mongoose
 const app = express();
 
 app.use(express.json());
-
 app.use(cookieParser());
-
 app.listen(3000, () => {
   console.log('Server is running on port 3000!');
 });
@@ -32,6 +34,7 @@ app.listen(3000, () => {
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/listing', listingRouter);
+app.use('/api/visit', visitRouter);
 
 
 app.use(express.static(path.join(__dirname, '/client/dist')));

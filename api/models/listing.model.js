@@ -6,58 +6,105 @@ const listingSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+
     description: {
       type: String,
       required: true,
     },
+
     address: {
       type: String,
       required: true,
     },
+
     regularPrice: {
       type: Number,
       required: true,
     },
+
     discountPrice: {
       type: Number,
       required: true,
     },
+
     bathrooms: {
       type: Number,
       required: true,
     },
+
     bedrooms: {
       type: Number,
       required: true,
     },
+
     furnished: {
       type: Boolean,
       required: true,
     },
+
     parking: {
       type: Boolean,
       required: true,
     },
+
     type: {
       type: String,
       required: true,
     },
+
+    // NEW FIELD
+    preferredTenant: {
+      type: String,
+      enum: ['family', 'bachelor', 'anyone'],
+      default: 'anyone',
+    },
+
+    status: {
+      type: String,
+      enum: ['available', 'rented', 'sold'],
+      default: 'available',
+    },
+
     offer: {
       type: Boolean,
       required: true,
     },
+
     imageUrls: {
       type: Array,
       required: true,
     },
-    userRef: {
+
+    phone: {
       type: String,
+    },
+
+    email: {
+      type: String,
+    },
+
+    whatsapp: {
+      type: String,
+    },
+
+    userRef: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
       required: true,
+    },
+    ownerName: {
+      type: String,
+    },
+
+    latitude: {
+      type: Number,
+    },
+
+    longitude: {
+      type: Number,
     },
   },
   { timestamps: true }
 );
-
 const Listing = mongoose.model('Listing', listingSchema);
-
 export default Listing;

@@ -1,12 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 export default function Contact({ listing }) {
   const [landlord, setLandlord] = useState(null);
-  const [message, setMessage] = useState('');
-  const onChange = (e) => {
-    setMessage(e.target.value);
-  };
 
   useEffect(() => {
     const fetchLandlord = async () => {
@@ -18,33 +13,54 @@ export default function Contact({ listing }) {
         console.log(error);
       }
     };
+
     fetchLandlord();
   }, [listing.userRef]);
+
   return (
     <>
       {landlord && (
-        <div className='flex flex-col gap-2'>
-          <p>
-            Contact <span className='font-semibold'>{landlord.username}</span>{' '}
-            for{' '}
-            <span className='font-semibold'>{listing.name.toLowerCase()}</span>
-          </p>
-          <textarea
-            name='message'
-            id='message'
-            rows='2'
-            value={message}
-            onChange={onChange}
-            placeholder='Enter your message here...'
-            className='w-full border p-3 rounded-lg'
-          ></textarea>
+        <div className="bg-white border rounded-xl shadow-md p-5 mt-4">
 
-          <Link
-          to={`mailto:${landlord.email}?subject=Regarding ${listing.name}&body=${message}`}
-          className='bg-slate-700 text-white text-center p-3 uppercase rounded-lg hover:opacity-95'
-          >
-            Send Message          
-          </Link>
+          <h2 className="text-2xl font-bold text-slate-800 mb-5">
+            Contact Property Owner
+          </h2>
+
+          <div className="space-y-3 text-slate-700">
+
+            <p>
+  <span className="font-semibold">👤 Owner:</span>{' '}
+  {listing.ownerName || landlord.username}
+</p>
+
+            <p>
+              <span className="font-semibold">📧 Email:</span>{' '}
+              {listing.email || 'Not Provided'}
+            </p>
+
+            <p>
+              <span className="font-semibold">📞 Phone:</span>{' '}
+              {listing.phone || 'Not Provided'}
+            </p>
+
+            <p>
+              <span className="font-semibold">💬 WhatsApp:</span>{' '}
+              {listing.whatsapp || 'Not Provided'}
+            </p>
+
+          </div>
+
+          {listing.whatsapp && (
+            <a
+              href={`https://wa.me/${listing.whatsapp}?text=Hi ${landlord.username}, I'm interested in your property "${listing.name}". Is it still available?`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full mt-6 bg-green-600 text-white text-center p-3 rounded-lg font-semibold hover:bg-green-700 transition"
+            >
+              💬 Chat on WhatsApp
+            </a>
+          )}
+
         </div>
       )}
     </>

@@ -77,3 +77,53 @@ export const getUser = async (req, res, next) => {
     next(error);
   }
 };
+export const toggleWishlist = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return next(errorHandler(404, 'User not found!'));
+    }
+
+    const listingId = req.params.listingId;
+
+    const exists = user.wishlist.includes(listingId);
+
+    if (exists) {
+      user.wishlist = user.wishlist.filter(
+        (id) => id.toString() !== listingId
+      );
+    } else {
+      user.wishlist.push(listingId);
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      wishlist: user.wishlist,
+      message: exists
+        ? 'Removed from wishlist'
+        : 'Added to wishlist',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+export const getWishlist = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return next(errorHandler(404, 'User not found!'));
+    }
+
+    const listings = await Listing.find({
+      _id: { $in: user.wishlist },
+    });
+
+    res.status(200).json(listings);
+  } catch (error) {
+    next(error);
+  }
+};
