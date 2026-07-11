@@ -284,11 +284,13 @@ ${window.location.href}`;
   </>
 )}
 
-{listing.latitude && listing.longitude && (
- <NearbyPlaces
-  latitude={selectedLocation?.lat}
-  longitude={selectedLocation?.lng}
-/>
+{listing.latitude &&
+  listing.longitude &&
+  selectedLocation && (
+    <NearbyPlaces
+      latitude={selectedLocation.lat}
+      longitude={selectedLocation.lng}
+    />
 )}
           </div>
   <div className="max-w-4xl mx-auto mt-12 mb-10 px-4">
