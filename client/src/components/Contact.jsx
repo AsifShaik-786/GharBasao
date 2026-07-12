@@ -10,7 +10,7 @@ export default function Contact({ listing }) {
 
     const fetchLandlord = async () => {
       try {
-        const res = await fetch(
+   const res = await fetch(
   `${import.meta.env.VITE_API_URL}/api/user/${listing.userRef}`,
   {
     credentials: 'include',
@@ -26,10 +26,8 @@ if (!res.ok) {
 }
 
 const data = await res.json();
+console.log('📦 Landlord Data:', data);
 setLandlord(data);
-        console.log('📦 Landlord Data:', data);
-
-        setLandlord(data);
       } catch (error) {
         console.log('❌ Fetch Error:', error);
       }
