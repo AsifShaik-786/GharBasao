@@ -7,9 +7,12 @@ export default function VisitRequests() {
   useEffect(() => {
     const fetchVisits = async () => {
       try {
-        const res = await fetch('/api/visit/owner', {
-          credentials: 'include',
-        });
+        const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/visit/owner`,
+  {
+    credentials: 'include',
+  }
+);
 
         const data = await res.json();
 
@@ -28,14 +31,17 @@ export default function VisitRequests() {
 
   const updateStatus = async (visitId, status) => {
     try {
-      const res = await fetch(`/api/visit/status/${visitId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({ status }),
-      });
+     const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/visit/status/${visitId}`,
+  {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    body: JSON.stringify({ status }),
+  }
+);
 
       const data = await res.json();
 
