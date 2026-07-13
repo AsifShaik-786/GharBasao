@@ -32,15 +32,23 @@ console.log("req.user:", req.user);
       );
     }
 
-    const visit = await Visit.create({
-      listingId: listing._id,
-      ownerId: listing.userRef._id,
-      visitorId: req.user.id,
-      date,
-      time,
-      message,
-    });
+   let visit;
 
+try {
+  visit = await Visit.create({
+    listingId: listing._id,
+    ownerId: listing.userRef._id,
+    visitorId: req.user.id,
+    date,
+    time,
+    message,
+  });
+
+  console.log("✅ Visit saved:", visit);
+} catch (err) {
+  console.error("❌ Visit.create() failed:", err);
+  throw err;
+}
     // Notify Owner (Email failure won't affect DB)
     try {
       const subject = '📅 New Property Visit Request - GharBasao';
