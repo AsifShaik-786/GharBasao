@@ -105,6 +105,9 @@ try {
 =========================================================== */
 export const getOwnerVisits = async (req, res, next) => {
   try {
+    console.log("================================");
+    console.log("Logged in owner:", req.user.id);
+
     const visits = await Visit.find({
       ownerId: req.user.id,
     })
@@ -112,8 +115,13 @@ export const getOwnerVisits = async (req, res, next) => {
       .populate('visitorId', 'username email avatar')
       .sort({ createdAt: -1 });
 
+    console.log("Visits found:", visits.length);
+    console.log(visits);
+    console.log("================================");
+
     res.status(200).json(visits);
   } catch (error) {
+    console.error(error);
     next(error);
   }
 };
