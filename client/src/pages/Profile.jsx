@@ -78,7 +78,8 @@ useEffect(() => {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
-      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/update/${currentUser._id}`, {
+  credentials: 'include',
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -101,7 +102,8 @@ useEffect(() => {
   const handleDeleteUser = async () => {
     try {
       dispatch(deleteUserStart());
-      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/delete/${currentUser._id}`, {
+  credentials: 'include',
         method: 'DELETE',
       });
       const data = await res.json();
@@ -118,7 +120,9 @@ useEffect(() => {
   const handleSignOut = async () => {
     try {
       dispatch(signOutUserStart());
-      const res = await fetch('/api/auth/signout');
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signout`, {
+  credentials: 'include',
+});
       const data = await res.json();
       if (data.success === false) {
         dispatch(deleteUserFailure(data.message));
@@ -133,7 +137,12 @@ useEffect(() => {
   const handleShowListings = async () => {
     try {
       setShowListingsError(false);
-      const res = await fetch(`/api/user/listings/${currentUser._id}`);
+      const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/user/listings/${currentUser._id}`,
+  {
+    credentials: 'include',
+  }
+);
       const data = await res.json();
       if (data.success === false) {
         setShowListingsError(true);
@@ -148,9 +157,13 @@ useEffect(() => {
 
   const handleListingDelete = async (listingId) => {
     try {
-      const res = await fetch(`/api/listing/delete/${listingId}`, {
-        method: 'DELETE',
-      });
+      const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/listing/delete/${listingId}`,
+  {
+    method: 'DELETE',
+    credentials: 'include',
+  }
+);
       const data = await res.json();
       if (data.success === false) {
         console.log(data.message);
