@@ -22,14 +22,17 @@ export default function ScheduleVisit({ listingId }) {
     try {
       setLoading(true);
 
-      const res = await fetch(`/api/visit/create/${listingId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(formData),
-      });
+      const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/visit/create/${listingId}`,
+  {
+    method: 'POST',
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData),
+  }
+);
 
       const data = await res.json();
 
