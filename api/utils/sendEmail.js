@@ -3,12 +3,20 @@ import nodemailer from 'nodemailer';
 export const sendEmail = async (to, subject, html) => {
   try {
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
+      connectionTimeout: 30000,
+      greetingTimeout: 30000,
+      socketTimeout: 30000,
     });
+
+    await transporter.verify();
+    console.log('✅ SMTP Connected');
 
     await transporter.sendMail({
       from: `"GharBasao" <${process.env.EMAIL_USER}>`,
@@ -16,6 +24,8 @@ export const sendEmail = async (to, subject, html) => {
       subject,
       html,
     });
+
+    console.log(`✅ Email sent to ${to}`);
   } catch (error) {
     console.error('Email sending failed:', error);
     throw error;
