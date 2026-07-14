@@ -82,8 +82,11 @@ try {
         </div>
       `;
 
-      await sendEmail(listing.userRef.email, subject, html);
-    } catch (emailError) {
+sendEmail(listing.userRef.email, subject, html)
+  .then(() => console.log("✅ Owner email sent"))
+  .catch((err) =>
+    console.error("Owner notification email failed:", err.message)
+  );    } catch (emailError) {
       console.error(
         'Owner notification email failed:',
         emailError.message
