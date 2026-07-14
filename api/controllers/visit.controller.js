@@ -214,23 +214,18 @@ export const updateVisitStatus = async (req, res, next) => {
       `;
     }
 
-    // Email shouldn't affect DB update
-    try {
-      await sendEmail(
-        visit.visitorId.email,
-        subject,
-        html
-      );
-
-      console.log(
-        `Visit status email sent to ${visit.visitorId.email}`
-      );
-    } catch (emailError) {
-      console.error(
-        'Visitor email failed:',
-        emailError.message
-      );
-    }
+    // Send email in background (don't wait)
+sendEmail(
+  visit.visitorId.email,
+  subject,
+  html
+)
+  .then(() => {
+    console.log(`✅ Visit status email sent to ${visit.visitorId.email}`);
+  })
+  .catch((err) => {
+    console.error("Visitor email failed:", err.message);
+  });
 
     res.status(200).json({
       success: true,
