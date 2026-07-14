@@ -12,16 +12,23 @@ export const sendEmail = async (to, subject, html) => {
       },
     });
 
-    await transporter.sendMail({
+    // Verify SMTP connection
+    await transporter.verify();
+    console.log("✅ SMTP Connected Successfully");
+
+    const info = await transporter.sendMail({
       from: `"GharBasao" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       html,
     });
 
-    console.log(`✅ Email sent to ${to}`);
+    console.log("✅ Email sent!");
+    console.log(info);
+
   } catch (error) {
-    console.error('Email sending failed:', error);
+    console.error("❌ SMTP Error:");
+    console.error(error);
     throw error;
   }
 };
