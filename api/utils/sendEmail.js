@@ -1,20 +1,11 @@
-import {
-  TransactionalEmailsApi,
-  TransactionalEmailsApiApiKeys,
-} from "@getbrevo/brevo";
-
-const apiInstance = new TransactionalEmailsApi();
-
-apiInstance.setApiKey(
-  TransactionalEmailsApiApiKeys.apiKey,
-  process.env.BREVO_API_KEY
-);
+import { BrevoClient } from "@getbrevo/brevo";
+const brevoClient = new BrevoClient({
+  apiKey: process.env.BREVO_API_KEY,
+});
 
 export const sendEmail = async (to, subject, html) => {
   try {
-    const sendSmtpEmail = {
-      subject,
-      htmlContent: html,
+    await brevoClient.transactionalEmails.sendTransacEmail({
       sender: {
         name: "GharBasao",
         email: process.env.BREVO_EMAIL,
@@ -24,15 +15,15 @@ export const sendEmail = async (to, subject, html) => {
           email: to,
         },
       ],
-    };
-
-    await apiInstance.sendTransacEmail(sendSmtpEmail);
+      subject,
+      htmlContent: html,
+    });
 
     console.log("✅ Email sent successfully");
   } catch (error) {
     console.log(
       "❌ Email error:",
-      error.response?.body || error.message
+      error.message
     );
   }
 };
