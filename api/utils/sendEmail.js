@@ -10,11 +10,12 @@ export const sendEmail = async (to, subject, html) => {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
-    });
 
-    // Verify SMTP connection
-    await transporter.verify();
-    console.log("✅ SMTP Connected Successfully");
+      // Prevent waiting for a long time if SMTP is unreachable
+      connectionTimeout: 5000,
+      greetingTimeout: 5000,
+      socketTimeout: 5000,
+    });
 
     const info = await transporter.sendMail({
       from: `"GharBasao" <${process.env.EMAIL_USER}>`,
@@ -23,12 +24,14 @@ export const sendEmail = async (to, subject, html) => {
       html,
     });
 
-    console.log("✅ Email sent!");
-    console.log(info);
+    console.log("✅ Email sent successfully");
+    console.log("Message ID:", info.messageId);
 
+    return info;
   } catch (error) {
-    console.error("❌ SMTP Error:");
-    console.error(error);
+    console.error("❌ Email sending failed:");
+    console.error(error.message);
+
     throw error;
   }
 };
