@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import ListingItem from '../components/ListingItem';
 import {
   MapContainer,
   TileLayer,
@@ -31,7 +30,7 @@ import {
   FaWhatsapp,
 } from 'react-icons/fa';
 import Contact from '../components/Contact';
-import NearbyPlaces from '../components/NearbyPlaces';
+
 
 // https://sabe.io/blog/javascript-format-numbers-commas#:~:text=The%20best%20way%20to%20format,format%20the%20number%20with%20commas.
 function ClickMarker({ onSelect }) {
@@ -284,14 +283,6 @@ ${window.location.href}`;
   </>
 )}
 
-{listing.latitude &&
-  listing.longitude &&
-  selectedLocation && (
-    <NearbyPlaces
-      latitude={selectedLocation.lat}
-      longitude={selectedLocation.lng}
-    />
-)}
           </div>
   <div className="max-w-4xl mx-auto mt-12 mb-10 px-4">
   <div className="bg-slate-50 border rounded-2xl p-8 text-center shadow-sm">
