@@ -19,7 +19,7 @@ export default function OAuth() {
         `${import.meta.env.VITE_API_URL}/api/auth/google`,
         {
           method: 'POST',
-          credentials: 'include', // ✅ Important
+          credentials: 'include', //  Important
           headers: {
             'Content-Type': 'application/json',
           },
