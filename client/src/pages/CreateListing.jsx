@@ -197,7 +197,7 @@ const storeImage = async (file) => {
     }
 
     // STEP 2: Send data to backend
-    const res = await fetch('/api/listing/create', {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/listing/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

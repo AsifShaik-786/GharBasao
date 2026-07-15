@@ -29,10 +29,16 @@ const [uploading, setUploading] = useState(false);
     imageUrls: [],
   });
 
+  
+  
+  
+  
   useEffect(() => {
     const fetchListing = async () => {
       try {
-        const res = await fetch(`/api/listing/get/${listingId}`);
+        const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/listing/get/${listingId}`
+);
         const data = await res.json();
 
         if (data.success === false) {
@@ -74,7 +80,9 @@ const [uploading, setUploading] = useState(false);
     setSaving(true);
     setError('');
 
-    const res = await fetch(`/api/listing/update/${listingId}`, {
+    const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/listing/update/${listingId}`,
+  {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

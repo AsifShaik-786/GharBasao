@@ -35,7 +35,7 @@ const { currentUser } = useSelector((state) => state.user);
   e.preventDefault();
 
   try {
-    const res = await fetch(`/api/user/wishlist/${listing._id}`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/wishlist/${listing._id}`, {
       method: 'POST',
       credentials: 'include',
     });

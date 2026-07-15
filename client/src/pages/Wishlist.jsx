@@ -11,11 +11,14 @@ export default function Wishlist() {
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
-        const res = await fetch(
-          `/api/user/wishlist/${currentUser._id}`
-        );
+       const res = await fetch(
+  `${import.meta.env.VITE_API_URL}/api/user/wishlist/${currentUser._id}`,
+  {
+    credentials: "include",
+  }
+);
 
-        const data = await res.json();
+const data = await res.json();
 
         if (res.ok) {
           setListings(data);
