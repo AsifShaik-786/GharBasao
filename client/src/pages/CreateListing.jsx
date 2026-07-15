@@ -199,9 +199,9 @@ const storeImage = async (file) => {
     // STEP 2: Send data to backend
     const res = await fetch(`${import.meta.env.VITE_API_URL}/api/listing/create`, {
       method: 'POST',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
       },
       body: JSON.stringify({
         ...formData,
